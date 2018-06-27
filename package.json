@@ -1,0 +1,25 @@
+{
+  "name": "behaviours-project",
+  "version": "0.1.0",
+  "description": "behaviours-project",
+  "main": "server.js",
+  "engines": {
+    "npm": "latest",
+    "node": "latest"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "beamjs": "latest",
+    "email-validator": "latest",
+    "fs-extra": "^5.0.0",
+    "jsonwebtoken": "latest",
+    "mongodb": "^2.2.31",
+    "mongoose-hashed-property": "quaNode/js-mongoose-hashed-property",
+    "mongoose-secret": "quaNode/mongoose-secret",
+    "mongoose-timestamp": "latest",
+    "path": "^0.12.7",
+    "promisify-node": "^0.4.0"
+  }
+}
