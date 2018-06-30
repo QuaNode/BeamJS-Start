@@ -18,14 +18,6 @@ module.exports.register = behaviour({
   type: 'database_with_action',
   parameters: {
 
-    type: {
-      key: 'user.type',
-      type: 'body'
-    },
-    username: {
-      key: 'user.username',
-      type: 'body'
-    },
     first_name: {
       key: 'user.first_name',
       type: 'body'
@@ -40,46 +32,6 @@ module.exports.register = behaviour({
     },
     email: {
       key: 'user.email',
-      type: 'body'
-    },
-    national_id: {
-      key: 'user.national_id',
-      type: 'body'
-    },
-    gender: {
-      key: 'user.gender',
-      type: 'body'
-    },
-    birthday: {
-      key: 'user.birthday',
-      type: 'body'
-    },
-    title: {
-      key: 'user.title',
-      type: 'body'
-    },
-    category: {
-      key: 'user.category',
-      type: 'body'
-    },
-    syndicate: {
-      key: 'user.syndicate',
-      type: 'body'
-    },
-    Profession: {
-      key: 'user.Profession',
-      type: 'body'
-    },
-    medication: {
-      key: 'user.medication',
-      type: 'body'
-    },
-    password: {
-      key: 'user.password',
-      type: 'body'
-    },
-    privilege: { // doesn't exist in form
-      key: 'user.privilege',
       type: 'body'
     }
   },
@@ -148,42 +100,14 @@ module.exports.register = behaviour({
         return !user && !error && true;
       }).begin('Insert', function (key, businessController, operation) {
 
-        var userObj = {};
-        if (self.parameters.type === 0) { //admin
-          userObj = {
-
-          };
-        } else if (self.parameters.type === 1) { // doctor
-          userObj = {
-            type: self.parameters.type,
-            email: self.parameters.email,
-            password: self.parameters.password,
-            first_name: self.parameters.first_name,
-            last_name: self.parameters.last_name,
-            username: self.parameters.username,
-            national_id: self.parameters.national_id,
-            mobile: self.parameters.mobile,
-            gender: self.parameters.gender,
-            title: self.parameters.title,
-            category: self.parameters.category,
-            syndicate: self.parameters.syndicate,
-            privilege: self.parameters.privilege || 'user1'
-          }
-        } else if (self.parameters.type === 2) { // patient
-          userObj = {
-            type: self.parameters.type,
-            first_name: self.parameters.first_name,
-            last_name: self.parameters.last_name,
-            username: self.parameters.username,
-            email: self.parameters.email,
-            password: self.parameters.password,
-            national_id: self.parameters.national_id,
-            mobile: self.parameters.mobile,
-            birthday: self.parameters.birthday,
-            gender: self.parameters.gender,
-            privilege: self.parameters.privilege || 'user1'
-          }
+        var userObj = {
+          email: self.parameters.email,
+          password: self.parameters.password,
+          first_name: self.parameters.first_name,
+          last_name: self.parameters.last_name,
+          mobile: self.parameters.mobile
         }
+
 
         operation.entity(new User()).objects(userObj).callback(function (users, e) {
 

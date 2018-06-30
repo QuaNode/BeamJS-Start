@@ -46,20 +46,7 @@ module.exports.getUser = behaviour(
           return error || e;
         }).apply();
       });
-      // if ((typeof self.parameters.username !== 'string' || self.parameters.username.length === 0) &&
-      //   (typeof self.parameters.email !== 'string' || self.parameters.email.length === 0)) {
 
-      //   error = new Error('Invalid username or email');
-      //   error.code = 401;
-      //   return;
-      // }
-      // if (typeof self.parameters.password !== 'string' || self.parameters.password.length === 0) {
-
-      //   error = new Error('Invalid password');
-      //   error.code = 401;
-      //   return;
-      // }
-      console.log("id", self.parameters.user);
       self.begin('Query', function (key, businessController, operation) {
         operation.query([new QueryExpression({
           fieldName: '_id',
@@ -69,7 +56,6 @@ module.exports.getUser = behaviour(
           .entity(new User())
           .callback(function (users, e) {
             if (e) error = e;
-            console.log("users", users);
             if (users.length > 0)
               res_user = users[0];
           }).apply();

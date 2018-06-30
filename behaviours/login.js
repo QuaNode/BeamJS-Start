@@ -139,7 +139,7 @@ module.exports.login = behaviour({
       operation.callback(function (authUser) {
 
         if (user) {
-        authUser.username = user.username;
+          authUser.username = user.username;
           authUser.email = user.email;
           authUser.id = user._id;
           authUser.name = user.first_name.concat(' ', user.last_name);
