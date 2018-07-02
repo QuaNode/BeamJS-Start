@@ -69,7 +69,7 @@ module.exports.login = behaviour({
     'X-Access-Token': {
 
       key: 'token',
-      type: 'header',
+      type: 'body',
       purpose: ['constant', {
 
         as: 'parameter',

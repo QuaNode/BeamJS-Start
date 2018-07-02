@@ -35,7 +35,7 @@ module.exports.validate = behaviour({
       type: 'middleware'
     }
   },
-  unless: ['login', 'register']
+  unless: ['login', 'register', 'addx', 'updatex', 'getx', 'deletex', 'searchx']
 }, function (init) {
 
   return function () {

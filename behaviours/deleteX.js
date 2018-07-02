@@ -16,8 +16,8 @@ module.exports.deletex = behaviour({
     method: 'POST',
     parameters: {
 
-        xid: {
-            key: 'xid',
+        id: {
+            key: 'id',
             type: 'body'
         }
     },
@@ -47,7 +47,7 @@ module.exports.deletex = behaviour({
         });
 
 
-        if (typeof self.parameters.xid !== "number" || self.parameters.xid.length === 0) {
+        if (typeof self.parameters.id !== "number" || self.parameters.id.length === 0) {
 
             error = new Error('x id is invalid');
             error.code = 401;
@@ -55,11 +55,11 @@ module.exports.deletex = behaviour({
         }
         self.begin('Delete', function (key, businessController, operation) {
 
-            operation.entity(new Reward()).query([new QueryExpression({
+            operation.entity(new X()).query([new QueryExpression({
 
                 fieldName: '_id',
                 comparisonOperator: ComparisonOperators.EQUAL,
-                fieldValue: self.parameters.xid
+                fieldValue: self.parameters.id
             })]).callback(function (xArray, e) {
                 if (e) {
                     error = e;

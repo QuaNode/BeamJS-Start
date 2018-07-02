@@ -19,19 +19,23 @@ module.exports.register = behaviour({
   parameters: {
 
     first_name: {
-      key: 'user.first_name',
+      key: 'first_name',
       type: 'body'
     },
     last_name: {
-      key: 'user.last_name',
+      key: 'last_name',
       type: 'body'
     },
     mobile: {
-      key: 'user.mobile',
+      key: 'mobile',
       type: 'body'
     },
     email: {
-      key: 'user.email',
+      key: 'email',
+      type: 'body'
+    },
+    password: {
+      key: 'password',
       type: 'body'
     }
   },
@@ -118,7 +122,7 @@ module.exports.register = behaviour({
 
           if (user) authUser.email = user.email;
           authUser.registered = user && true;
-          authUser.name = user.first_name.concat(' ', user.last_name);
+          authUser.name = user.first_name + user.last_name;
 
         }).apply();
       });

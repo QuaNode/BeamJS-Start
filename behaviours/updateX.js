@@ -25,7 +25,7 @@ module.exports.updatex = behaviour({
       type: 'body'
     },
     working_days: {
-      key: 'X.working_days',
+      key: 'working_days',
       type: 'body'
     }
   },
@@ -53,7 +53,7 @@ module.exports.updatex = behaviour({
         }).apply();
       });
     });
-    if (typeof self.parameters.id != "number" || self.parameters.id == 0) {
+    if (typeof self.parameters.id !== "number" || self.parameters.id.length === 0) {
       error = new Error('Invalid Id');
       error.code = 400;
       return;

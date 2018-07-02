@@ -12,7 +12,7 @@ module.exports.x = model({
         id: Number,
         name: String,
         working_days: [{
-            id: Number,
+            _id: Number,
             day: String,
             from: String,
             to: String

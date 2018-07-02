@@ -14,7 +14,7 @@ module.exports.searchx = behaviour({
     name: 'searchx',
     version: '1',
     path: '/searchx',
-    method: 'GET',
+    method: 'POST',
     parameters: {
 
         name: {

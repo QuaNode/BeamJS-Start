@@ -14,7 +14,7 @@ module.exports.getx = behaviour(
     name: 'getx',
     version: '1',
     path: '/getx',
-    method: 'GET',
+    method: 'POST',
     parameters: {
 
       id: {
