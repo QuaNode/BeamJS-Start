@@ -37,33 +37,19 @@ module.exports.login = behaviour({
   method: 'POST',
   parameters: {
 
-    username: {
-
-      key: 'user.username',
-      type: 'body'
-    },
     email: {
 
-      key: 'user.email',
+      key: 'email',
       type: 'body'
     },
     password: {
 
-      key: 'user.password',
+      key: 'password',
       type: 'body'
-    },
-    ip: {
-
-      key: 'ip',
-      type: 'middleware'
     }
   },
   returns: {
 
-    username: {
-
-      type: 'body'
-    },
     email: {
 
       type: 'body'
@@ -77,10 +63,6 @@ module.exports.login = behaviour({
       type: 'body'
     },
     id: {
-
-      type: 'body'
-    },
-    type: {
 
       type: 'body'
     },
@@ -109,10 +91,9 @@ module.exports.login = behaviour({
         return error || e;
       }).apply();
     });
-    if ((typeof self.parameters.username !== 'string' || self.parameters.username.length === 0) &&
-      (typeof self.parameters.email !== 'string' || self.parameters.email.length === 0)) {
+    if (typeof self.parameters.email !== 'string' || self.parameters.email.length === 0) {
 
-      error = new Error('Invalid username or email');
+      error = new Error('Invalid email');
       error.code = 401;
       return;
     }
@@ -126,9 +107,9 @@ module.exports.login = behaviour({
 
       operation.entity(new User()).query([new QueryExpression({
 
-        fieldName: self.parameters.username && self.parameters.username.length > 0 ? 'username' : 'email',
+        fieldName: 'email',
         comparisonOperator: ComparisonOperators.EQUAL,
-        fieldValue: self.parameters.username && self.parameters.username.length > 0 ? self.parameters.username : self.parameters.email
+        fieldValue: self.parameters.email
       })]).callback(function (users, e) {
 
         user = Array.isArray(users) && users.length === 1 && users[0];
@@ -139,13 +120,11 @@ module.exports.login = behaviour({
       operation.callback(function (authUser) {
 
         if (user) {
-          authUser.username = user.username;
           authUser.email = user.email;
           authUser.id = user._id;
           authUser.name = user.first_name.concat(' ', user.last_name);
-          authUser.type = user.type;
         }
-        authUser.authenticated = !user && 'wrong username or email' || user.verifyPassword(self.parameters.password) || 'wrong password';
+        authUser.authenticated = !user && 'wrong email' || user.verifyPassword(self.parameters.password) || 'wrong password';
         if (user) authUser.token = genToken(user, self.parameters.ip);
       }).apply();
     });

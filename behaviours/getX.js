@@ -6,40 +6,34 @@ var behaviour = backend.behaviour();
 var LogicalOperators = require('beamjs').LogicalOperators;
 var ComparisonOperators = require('beamjs').ComparisonOperators;
 var QueryExpression = backend.QueryExpression;
-var User = require('../models/user.js').user;
-var jwt = require('jsonwebtoken');
+var X = require('../models/x.js').x;
 
 
-module.exports.getUser = behaviour(
+module.exports.getx = behaviour(
   {
-    name: 'getUser',
+    name: 'getx',
     version: '1',
-    path: '/userinfo',
+    path: '/getx',
     method: 'GET',
     parameters: {
 
-      token: {
-
-        key: 'X-Access-Token',
-        type: 'header'
-      },
-      user: {
-        key: 'user',
-        type: 'middleware'
+      id: {
+        key: 'id',
+        type: 'body'
       }
     },
     returns: {
 
-      user: {
+      X: {
         type: 'body'
       }
     }
-  }
-  , function (init) {
+  },
+ function (init) {
 
     return function () {
       var self = init.apply(this, arguments).self();
-      var res_user = null;
+      var x = null;
       var error = null;
       self.begin('ErrorHandling', function (key, businessController, operation) {
 
@@ -54,21 +48,21 @@ module.exports.getUser = behaviour(
         operation.query([new QueryExpression({
           fieldName: '_id',
           comparisonOperator: ComparisonOperators.EQUAL,
-          fieldValue: self.parameters.user._id
+          fieldValue: self.parameters.id
         })])
-          .entity(new User())
-          .callback(function (users, e) {
+          .entity(new X())
+          .callback(function (xArray, e) {
             
             if (e) error = e;
-            if (users.length > 0)
-              res_user = users[0];
+            if (xArray.length > 0)
+              x = xArray[0];
           }).apply();
       });
 
       self.begin('ModelObjectMapping', function (key, businessController, operation) {
 
         operation.callback(function (response) {
-          response.user = res_user;
+          response.X = x;
         }).apply();
       });
     }

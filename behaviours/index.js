@@ -6,3 +6,5 @@ require('./addX.js');
 require('./updateX.js');
 require('./getX.js');
 require('./getUser.js');
+require('./deleteX');
+require('./searchX');

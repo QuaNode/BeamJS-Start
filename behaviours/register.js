@@ -90,8 +90,7 @@ module.exports.register = behaviour({
           user = Array.isArray(users) && users[0];
         })
         .apply();
-    })
-      .if(function () {
+    }).if(function () {
 
         if (user) {
 
@@ -108,11 +107,9 @@ module.exports.register = behaviour({
           mobile: self.parameters.mobile
         }
 
-
         operation.entity(new User()).objects(userObj).callback(function (users, e) {
 
           user = Array.isArray(users) && users.length === 1 && users[0];
-          console.log('user', user);
           if (e) error = e;
         }).apply();
       }).begin('ModelObjectMapping', function (key, businessController, operation) {
@@ -122,7 +119,7 @@ module.exports.register = behaviour({
           if (user) authUser.email = user.email;
           authUser.registered = user && true;
           authUser.name = user.first_name.concat(' ', user.last_name);
-          console.log('authUser', authUser);
+
         }).apply();
       });
   };
