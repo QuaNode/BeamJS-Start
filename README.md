@@ -1,2 +1,2 @@
 # BeamJS-Start
-Starter project to create beam applications
+Starter project to create BeamJS applications
