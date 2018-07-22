@@ -46,6 +46,10 @@ module.exports.login = behaviour({
 
       key: 'password',
       type: 'body'
+    },
+    ip: {
+      key: 'ip',
+      type: 'middleware'
     }
   },
   returns: {
