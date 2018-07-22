@@ -15,7 +15,7 @@ module.exports.getUser = behaviour(
     name: 'getUser',
     version: '1',
     path: '/userinfo',
-    method: 'POST',
+    method: 'GET',
     parameters: {
 
       token: {

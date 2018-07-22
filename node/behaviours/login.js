@@ -118,14 +118,14 @@ module.exports.login = behaviour({
     }).begin('ModelObjectMapping', function (key, businessController, operation) {
 
       operation.callback(function (authUser) {
-
-        if (user) {
+        if (user)
+          authUser.authenticated = !user && 'wrong email' || user.verifyPassword(self.parameters.password) || 'wrong password';
+        if (authUser.authenticated === true) {
           authUser.email = user.email;
           authUser.id = user._id;
           authUser.name = user.first_name.concat(' ', user.last_name);
+          authUser.token = genToken(user, self.parameters.ip);
         }
-        authUser.authenticated = !user && 'wrong email' || user.verifyPassword(self.parameters.password) || 'wrong password';
-        if (user) authUser.token = genToken(user, self.parameters.ip);
       }).apply();
     });
   };

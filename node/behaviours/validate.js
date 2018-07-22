@@ -36,21 +36,21 @@ module.exports.validate = behaviour({
     }
   },
   unless: ['login', 'register', 'addx', 'updatex', 'getx', 'deletex', 'searchx']
-}, function (init) {
+}, function(init) {
 
-  return function () {
+  return function() {
 
     var self = init.apply(this, arguments).self();
     var user = null;
     var error = null;
-    self.begin('ErrorHandling', function (key, businessController, operation) {
+    self.begin('ErrorHandling', function(key, businessController, operation) {
 
-      operation.error(function (e) {
+      operation.error(function(e) {
 
         return error || e;
       }).apply();
-    });
-    console.log('params', self.parameters);
+    }); 
+  console.log('params' , self.parameters);
     if (!self.parameters.token) {
 
       error = new Error('Access token is required');
@@ -64,26 +64,26 @@ module.exports.validate = behaviour({
       error.code = 401;
       return;
     }
-    self.begin('Query', function (key, businessController, operation) {
+    self.begin('Query', function(key, businessController, operation) {
 
       operation.entity(new User()).query([new QueryExpression({
 
         fieldName: '_id',
         comparisonOperator: ComparisonOperators.EQUAL,
         fieldValue: decoded.jwtid
-      })]).callback(function (users, e) {
+      })]).callback(function(users, e) {
 
         user = Array.isArray(users) && users.length === 1 && users[0];
         error = e;
       }).apply();
-    }).use(function (key, businessController, next) {
+    }).use(function(key, businessController, next) {
 
       if (user) {
 
         jwt.verify(self.parameters.token, user.secret, {
 
           audience: user.email + '/' + self.parameters.ip
-        }, function (e) {
+        }, function(e) {
 
           if (e) {
 
@@ -93,9 +93,9 @@ module.exports.validate = behaviour({
           next();
         });
       } else next();
-    }).begin(function (key, businessController, operation) {
+    }).begin(function(key, businessController, operation) {
 
-      operation.callback(function (authUser) {
+      operation.callback(function(authUser) {
 
         if (user) authUser.user = user;
         else {

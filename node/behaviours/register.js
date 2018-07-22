@@ -96,35 +96,37 @@ module.exports.register = behaviour({
         .apply();
     }).if(function () {
 
+      if (user) {
+
+        error = new Error('User existed');
+      }
+      return !user && !error && true;
+    }).begin('Insert', function (key, businessController, operation) {
+
+      var userObj = {
+        email: self.parameters.email,
+        password: self.parameters.password,
+        first_name: self.parameters.first_name,
+        last_name: self.parameters.last_name,
+        mobile: self.parameters.mobile
+      }
+
+      operation.entity(new User()).objects(userObj).callback(function (users, e) {
+
+        user = Array.isArray(users) && users.length === 1 && users[0];
+        if (e) error = e;
+      }).apply();
+    }).begin('ModelObjectMapping', function (key, businessController, operation) {
+
+      operation.callback(function (authUser) {
+
         if (user) {
-
-          error = new Error('User existed');
-        }
-        return !user && !error && true;
-      }).begin('Insert', function (key, businessController, operation) {
-
-        var userObj = {
-          email: self.parameters.email,
-          password: self.parameters.password,
-          first_name: self.parameters.first_name,
-          last_name: self.parameters.last_name,
-          mobile: self.parameters.mobile
-        }
-
-        operation.entity(new User()).objects(userObj).callback(function (users, e) {
-
-          user = Array.isArray(users) && users.length === 1 && users[0];
-          if (e) error = e;
-        }).apply();
-      }).begin('ModelObjectMapping', function (key, businessController, operation) {
-
-        operation.callback(function (authUser) {
-
-          if (user) authUser.email = user.email;
-          authUser.registered = user && true;
+          authUser.email = user.email;
+          authUser.registered = true;
           authUser.name = user.first_name + user.last_name;
+        }
 
-        }).apply();
-      });
+      }).apply();
+    });
   };
 });

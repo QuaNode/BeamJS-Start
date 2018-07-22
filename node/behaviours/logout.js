@@ -7,7 +7,6 @@ var LogicalOperators = require('beamjs').LogicalOperators;
 var ComparisonOperators = require('beamjs').ComparisonOperators;
 var QueryExpression = backend.QueryExpression;
 var User = require('../models/user.js').user;
-var jwt = require('jsonwebtoken');
 
 module.exports.logout = behaviour({
 

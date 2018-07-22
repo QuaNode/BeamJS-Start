@@ -75,9 +75,10 @@ module.exports.updatex = behaviour({
           if (e) error = e;
           if (Array.isArray(xArray) && xArray.length == 1)
             x = xArray[0];
-
-          x.name = self.parameters.name;
-          x.working_days = self.parameters.working_days;
+          if (typeof self.parameters.name !== 'undefined')
+            x.name = self.parameters.name;
+          if (typeof self.parameters.working_days !== 'undefined')
+            x.working_days = self.parameters.working_days;
 
           businessController.modelController.save(function (error) {
             if (error)
