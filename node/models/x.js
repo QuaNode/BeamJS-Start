@@ -9,12 +9,9 @@ module.exports.x = model({
 
     name: "x"
 }, {
-        id: Number,
         name: String,
         working_days: [{
-            _id: Number,
-            day: String,
-            from: String,
-            to: String
+            
+            day: String
         }]
     }, [TimestampsPlugin]);
