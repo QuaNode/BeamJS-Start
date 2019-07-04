@@ -3,8 +3,8 @@
 
 var backend = require('beamjs').backend();
 var behaviour = backend.behaviour();
-var ComparisonOperators = require('beamjs').ComparisonOperators;
-var QueryExpression = backend.QueryExpression;
+//var ComparisonOperators = require('beamjs').ComparisonOperators;
+//var QueryExpression = backend.QueryExpression;
 var X = require('../models/x').x;
 
 module.exports.addx = behaviour({
@@ -13,6 +13,7 @@ module.exports.addx = behaviour({
   version: '1',
   path: '/addx',
   method: 'POST',
+  type: 'database_with_action',
   parameters: {
 
     name: {
@@ -39,25 +40,29 @@ module.exports.addx = behaviour({
     var self = init.apply(this, arguments).self();
     var x = null;
     var error = null;
- 
-
-    if (Array.isArray(self.parameters.working_days) && self.parameters.working_days.length === 0) {
-
-      error = new Error('working days array is empty!!');
-      error.code = 401;
-      return;
-    }
 
     self.begin('ErrorHandling', function (key, businessController, operation) {
-
+      
       businessController.modelController.save(function (er) {
-
+        
         operation.error(function (e) {
-
+          
           return error || er || e;
         }).apply();
       });
     });
+      if (Array.isArray(self.parameters.working_days) && self.parameters.working_days.length === 0) {
+  
+        error = new Error('working days array is empty!!');
+        error.code = 400;
+        return;
+      }
+      if (typeof self.parameters.name!=='string'||self.parameters.name.length === 0) {
+  
+        error = new Error('invalid name!!');
+        error.code = 400;
+        return;
+      }
 
     self.begin('Insert', function (key, businessController, operation) {
 

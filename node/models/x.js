@@ -18,6 +18,3 @@ module.exports.x = model({
             to: String
         }]
     }, [TimestampsPlugin]);
-
-
-
