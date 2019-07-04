@@ -14,7 +14,6 @@ module.exports.request = model({
             id: Number,
             name: String
         },
-       
         text: text,
         priority: Number,
         accepted: Boolean
