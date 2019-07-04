@@ -5,18 +5,19 @@ var TimestampsPlugin = require('mongoose-timestamp');
 var backend = require('beamjs').backend();
 var model = backend.model();
 
-module.exports.x = model({
+module.exports.request = model({
 
     name: "x"
 }, {
-        id: Number,
-        name: String,
-        working_days: [{
-            _id: Number,
-            day: String,
-            from: String,
-            to: String
-        }]
+        requester: {
+            
+            id: Number,
+            name: String
+        },
+       
+        text: text,
+        priority: Number,
+        accepted: Boolean
     }, [TimestampsPlugin]);
 
 

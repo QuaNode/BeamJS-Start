@@ -3,6 +3,8 @@
 
 var backend = require('beamjs').backend();
 var behaviour = backend.behaviour();
+var ComparisonOperators = require('beamjs').ComparisonOperators;
+var QueryExpression = backend.QueryExpression;
 var X = require('../models/x').x;
 
 module.exports.addx = behaviour({
@@ -14,12 +16,10 @@ module.exports.addx = behaviour({
   parameters: {
 
     name: {
-
       key: 'name',
       type: 'body'
     },
     working_days: {
-
       key: 'working_days',
       type: 'body'
     }
@@ -37,8 +37,17 @@ module.exports.addx = behaviour({
   return function () {
 
     var self = init.apply(this, arguments).self();
-    var added = null;
+    var x = null;
     var error = null;
+ 
+
+    if (Array.isArray(self.parameters.working_days) && self.parameters.working_days.length === 0) {
+
+      error = new Error('working days array is empty!!');
+      error.code = 401;
+      return;
+    }
+
     self.begin('ErrorHandling', function (key, businessController, operation) {
 
       businessController.modelController.save(function (er) {
@@ -49,30 +58,34 @@ module.exports.addx = behaviour({
         }).apply();
       });
     });
-    if (Array.isArray(self.parameters.working_days) && self.parameters.working_days.length === 0) {
 
-      error = new Error('working days array is empty!!');
-      error.code = 400;
-      return;
-    }
-    if (typeof self.parameters.name !== 'string' || self.parameters.name.length === 0) {
-
-      error = new Error('Invalid name');
-      error.code = 400;
-      return;
-    }
     self.begin('Insert', function (key, businessController, operation) {
 
-      operation.entity(new X()).objects(self.parameters).callback(function (xArray, e) {
+      var working_days = [];
+      for(var i=0 ; i< self.parameters.working_days.length ; i++) {
 
+        working_days.push({
+
+          _id: (new Date()).getMilliseconds(),
+          day: self.parameters.working_days[i].day,
+          from: self.parameters.working_days[i].from,
+          to: self.parameters.working_days[i].to
+        })
+      }
+      var xObject = {
+        name: self.parameters.name,
+        working_days: working_days
+      }
+      operation.entity(new X()).objects(xObject).callback(function (xArray, e) {
+
+        x = Array.isArray(xArray) && xArray.length === 1 && xArray[0];
         if (e) error = e;
-        else added = true;
       }).apply();
     }).begin('ModelObjectMapping', function (key, businessController, operation) {
 
       operation.callback(function (response) {
 
-        response.added = added;
+        response.added = x && true;
       }).apply();
     });
   };
