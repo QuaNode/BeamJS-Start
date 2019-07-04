@@ -9,9 +9,9 @@ var X = require('../models/x').x;
 
 module.exports.addx = behaviour({
 
-  name: 'addx',
-  version: '1',
-  path: '/addx',
+  name: 'addreq',
+  version: '2',
+  path: '/addreq',
   method: 'POST',
   type: 'database_with_action',
   parameters: {
@@ -20,10 +20,22 @@ module.exports.addx = behaviour({
       key: 'name',
       type: 'body'
     },
-    working_days: {
-      key: 'working_days',
+    text: {
+      key: 'text',
       type: 'body'
-    }
+    },
+    periority: {
+      key: 'number',
+      type: 'body'
+    },
+    requester_id: {
+      key: 'id',
+      type: 'body'
+    },
+    requester_name: {
+        key: 'name',
+        type: 'body'
+      }
   },
   returns: {
 
@@ -42,13 +54,13 @@ module.exports.addx = behaviour({
     var error = null;
 
 
-    if (Array.isArray(self.parameters.working_days) && self.parameters.working_days.length === 0) {
+    /*if (Array.isArray(self.parameters.working_days) && self.parameters.working_days.length === 0) {
 
       error = new Error('working days array is empty!!');
       error.code = 401;
       return;
     }
-
+*/
     self.begin('ErrorHandling', function (key, businessController, operation) {
 
       businessController.modelController.save(function (er) {
@@ -62,22 +74,26 @@ module.exports.addx = behaviour({
 
     self.begin('Insert', function (key, businessController, operation) {
 
-      var working_days = [];
+      /*var working_days = [];
       for(var i=0 ; i< self.parameters.working_days.length ; i++) {
 
         working_days.push({
 
-          _id: (new Date()).getMilliseconds(),
+          _id:  (new Date()).getMilliseconds(),
           day: self.parameters.working_days[i].day,
           from: self.parameters.working_days[i].from,
           to: self.parameters.working_days[i].to
         })
-      }
-      var xObject = {
+      } */
+      var reqmodelobject = {
         name: self.parameters.name,
-        working_days: working_days
+        id:self.parameters.id,
+        text:self.parameters.text,
+        periority:self.parameters.periority,
+
+        //working_days: working_days
       }
-      operation.entity(new X()).objects(xObject).callback(function (xArray, e) {
+      operation.entity(new reqmodel()).objects(reqmodelobject).callback(function (xArray, e) {
 
         x = Array.isArray(xArray) && xArray.length === 1 && xArray[0];
         if (e) error = e;
@@ -86,7 +102,7 @@ module.exports.addx = behaviour({
 
       operation.callback(function (response) {
 
-        response.added = x && true;
+        response.added = reqmodel&& true;
       }).apply();
     });
   };
