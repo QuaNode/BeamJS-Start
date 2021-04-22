@@ -15,7 +15,7 @@
     "email-validator": "latest",
     "fs-extra": "^5.0.0",
     "jsonwebtoken": "latest",
-    "mongodb": "^2.2.31",
+    "mongodb": "^3.1.13",
     "mongoose-hashed-property": "quaNode/js-mongoose-hashed-property",
     "mongoose-secret": "quaNode/mongoose-secret",
     "mongoose-timestamp": "latest",
