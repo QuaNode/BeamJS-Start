@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "beamjs": "latest",
+    "functional-chain-behaviour": "latest",
     "jsonwebtoken": "latest",
     "mongoose-hashed-property": "quaNode/js-mongoose-hashed-property",
     "mongoose-secret": "quaNode/mongoose-secret",

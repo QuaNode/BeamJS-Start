@@ -10,7 +10,7 @@ mkdir my-beamjs-app && cd my-beamjs-app
 
 # 2. Initialize & install
 npm init -y
-npm install beamjs mongoose-timestamp mongoose-hashed-property mongoose-secret
+npm install beamjs functional-chain-behaviour mongoose-timestamp mongoose-hashed-property mongoose-secret
 
 # 3. Create server.js
 ```
