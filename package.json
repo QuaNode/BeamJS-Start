@@ -2,7 +2,6 @@
   "name": "behaviours-project",
   "version": "0.1.0",
   "description": "behaviours-project",
-  "main": "server.js",
   "engines": {
     "npm": "latest",
     "node": "latest"
