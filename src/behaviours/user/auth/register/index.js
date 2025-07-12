@@ -138,19 +138,19 @@ module.exports.register = behaviour({
           if (e) {
             error = e;
             success = false;
-          } else {
-            user = Array.isArray(savedUsers) && savedUsers[0];
+          } else if (Array.isArray(savedUsers)) {
+            ([user] = savedUsers);
           }
           next();
         });
       } else {
         next();
       }
+    }).skip(function () {
+      return !!error;
     }).map(function (response) {
-      if (error) {
+      if (!user) {
         response.success = false;
-        response.error = error.message;
-        response.code = error.code || 500;
       } else {
         response.success = success;
         response.user = {

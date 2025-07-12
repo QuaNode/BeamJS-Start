@@ -7,14 +7,14 @@ var {
   FunctionalChainBehaviour
 } = require('functional-chain-behaviour')();
 
-module.exports.getProfile = behaviour({
+module.exports.logout = behaviour({
 
-  name: 'getProfile',
+  name: 'logout',
   inherits: FunctionalChainBehaviour,
   version: '1',
-  type: 'database',
-  path: '/user/profile',
-  method: 'GET',
+  type: 'database_with_action',
+  path: '/auth/logout',
+  method: 'POST',
   parameters: {
     token: {
       key: 'X-Access-Token',
@@ -30,8 +30,8 @@ module.exports.getProfile = behaviour({
     }
   },
   returns: {
-    user: {
-      key: 'user',
+    success: {
+      key: 'success',
       type: 'body'
     }
   }
@@ -41,6 +41,7 @@ module.exports.getProfile = behaviour({
     var self = init.apply(this, arguments).self();
     var { authenticated, user } = self.parameters;
     var error = null;
+    var success = false;
 
     self.catch(function (e) {
       return error || e;
@@ -51,15 +52,20 @@ module.exports.getProfile = behaviour({
         return false;
       }
       return true;
+    }).async(function (next) {
+      var secret = user.secret;
+      user.generateNewSecret(function (e) {
+        if (e) {
+          error = e;
+        } else {
+          success = user.secret !== secret;
+        }
+        next();
+      });
+    }).skip(function () {
+      return !!error;
     }).map(function (response) {
-      response.user = {
-        _id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        mobile: user.mobile,
-        status: user.status
-      };
+      response.success = success;
     }).end();
   };
 });

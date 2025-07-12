@@ -127,11 +127,11 @@ module.exports.login = behaviour({
       } else {
         next();
       }
+    }).skip(function () {
+      return !!error;
     }).map(function (response) {
-      if (error) {
+      if (!user) {
         response.success = false;
-        response.error = error.message;
-        response.code = error.code || 500;
       } else {
         response.success = success;
         response.token = token;
