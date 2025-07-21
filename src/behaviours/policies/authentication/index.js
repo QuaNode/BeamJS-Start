@@ -69,13 +69,12 @@ module.exports.authenticate = behaviour({
     }).entity(new User({
       exclude: undefined
     })).query(() => [
-  new QueryExpression({
-    fieldName: '_id',
-    comparisonOperator: EQUAL,
-    fieldValue: decoded.jwtid
-  })
-])
-.then(function (users, e) {
+      new QueryExpression({
+        fieldName: '_id',
+        comparisonOperator: EQUAL,
+        fieldValue: decoded.jwtid
+      })
+    ]).then(function (users, e) {
       if (e) {
         error = e;
         return;
